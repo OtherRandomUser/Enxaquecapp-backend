@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using Enxaquecapp.Domain.Base;
 
 namespace Enxaquecapp.Domain
@@ -11,6 +12,8 @@ namespace Enxaquecapp.Domain
 
         public Guid UserId { get; protected set; }
         public User User { get; protected set; }
+
+        public Collection<Episode> Episodes { get; protected set; }
 
         protected Cause()
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using Enxaquecapp.Domain.Base;
 
 namespace Enxaquecapp.Domain
@@ -9,6 +10,13 @@ namespace Enxaquecapp.Domain
         public string Email { get; protected set; }
         public string Password { get; protected set; }
         public DateTime BirthDate { get; protected set; }
+
+        public Collection<Episode> Episodes { get; protected set; }
+        public Collection<Medication> Medications { get; protected set; }
+
+        public Collection<Cause> Causes { get; protected set; }
+        public Collection<Local> Locals { get; protected set; }
+        public Collection<Relief> Reliefs { get; protected set; }
 
         public Sex Sex { get; set; }
 
