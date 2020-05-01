@@ -64,6 +64,11 @@ namespace Enxaquecapp.Domain
 
             BirthDate = birthDate;
         }
+
+        public bool ValidatePassword(string password)
+        {
+            return Password == password;
+        }
     }
 
     public enum Sex
