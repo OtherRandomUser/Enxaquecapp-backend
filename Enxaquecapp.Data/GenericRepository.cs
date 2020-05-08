@@ -36,15 +36,21 @@ namespace Enxaquecapp.Data
             return _context.SaveChangesAsync();
         }
 
-        public Task<int> UpdateRangeAsync(IEnumerable<T> entity)
+        public Task<int> UpdateRangeAsync(IEnumerable<T> entities)
         {
-            _context.Set<T>().UpdateRange(entity);
+            _context.Set<T>().UpdateRange(entities);
             return _context.SaveChangesAsync();
         }
 
-        public Task<int> DeleteRangeAsync(IEnumerable<T> entity)
+        public Task<int> DeleteAsync(T entity)
         {
-            _context.Set<T>().RemoveRange(entity);
+            _context.Set<T>().Remove(entity);
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> DeleteRangeAsync(IEnumerable<T> entities)
+        {
+            _context.Set<T>().RemoveRange(entities);
             return _context.SaveChangesAsync();
         }
 

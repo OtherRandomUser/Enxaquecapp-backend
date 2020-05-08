@@ -25,7 +25,8 @@ namespace Enxaquecapp.WebApi.Security
 
         public async Task<TokenViewModel> GenerateTokenAsync(string email, string password)
         {
-            var user = _usersRepository.GetQueryable().SingleOrDefault(s => s.Email == email);
+            var user = await Task.Run(() =>
+                _usersRepository.GetQueryable().SingleOrDefault(s => s.Email == email));
 
             if (user == null)
                 throw new ArgumentException($"E-mail {email} não cadastrado");

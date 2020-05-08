@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Enxaquecapp.WebApi.InputModels;
 using Enxaquecapp.WebApi.Security;
@@ -11,7 +12,7 @@ namespace Enxaquecapp.WebApi.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class TokensController : ApiControllerBase
+    public class TokensController : ControllerBase
     {
         private TokenProvider _provider;
 
@@ -29,15 +30,20 @@ namespace Enxaquecapp.WebApi.Controllers
         /// <param name="inputModel">Input model of the token</param>
         /// <returns></returns>
         [HttpPost]
-        public Task<ActionResult<TokenViewModel>> PostAsync([FromBody] TokenInputModel inputModel)
-            => ExecuteAsync<TokenViewModel>(async () =>
+        public async Task<ActionResult<TokenViewModel>> PostAsync([FromBody] TokenInputModel inputModel)
+        {
+            if (inputModel == null)
+                return BadRequest();
+
+            try
             {
-                if (inputModel == null)
-                    return BadRequest();
-
                 var result = await _provider.GenerateTokenAsync(inputModel.Email, inputModel.Password);
-
                 return Ok(result);
-            });
+            }
+            catch (ArgumentException e)
+            {
+                return Unauthorized(e.Message);
+            }
+        }
     }
 }

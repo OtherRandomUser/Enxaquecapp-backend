@@ -17,10 +17,6 @@ namespace Enxaquecapp.WebApi.Controllers
             {
                 return BadRequest(e.Message);
             }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
         }
 
         protected async Task<ActionResult> ExecuteAsync(Func<Task<ActionResult>> functionAsync)
@@ -30,10 +26,6 @@ namespace Enxaquecapp.WebApi.Controllers
                 return await functionAsync();
             }
             catch (ArgumentException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
