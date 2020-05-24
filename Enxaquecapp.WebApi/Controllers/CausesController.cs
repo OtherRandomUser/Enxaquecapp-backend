@@ -63,14 +63,11 @@ namespace Enxaquecapp.WebApi.Controllers
                 var userId = User.UserId();
                 var cause = await _causesRepository.GetByIdAsync(id);
 
-                if (cause.UserId != userId)
-                    return BadRequest();
-
                 if (cause == null)
                     return NotFound();
 
                 if (cause.UserId != userId)
-                    return BadRequest();
+                    return Forbid();
 
                 return Ok((CauseViewModel) cause);
             });
@@ -108,8 +105,11 @@ namespace Enxaquecapp.WebApi.Controllers
                 var userId = User.UserId();
                 var cause = await _causesRepository.GetByIdAsync(id);
 
+                if (cause == null)
+                    return NotFound();
+
                 if (cause.UserId != userId)
-                    return BadRequest();
+                    return Forbid();
 
                 cause.SetDescription(inputModel.Description);
                 cause.Icon = inputModel.Icon;
@@ -132,8 +132,11 @@ namespace Enxaquecapp.WebApi.Controllers
                 var userId = User.UserId();
                 var cause = await _causesRepository.GetByIdAsync(id);
 
+                if (cause == null)
+                    return NotFound();
+
                 if (cause.UserId != userId)
-                    return BadRequest();
+                    return Forbid();
 
                 await _causesRepository.DeleteAsync(cause);
 

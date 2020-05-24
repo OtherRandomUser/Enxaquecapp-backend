@@ -69,7 +69,7 @@ namespace Enxaquecapp.Domain
                 throw new ArgumentOutOfRangeException("A intensidade de um episódio precisa ser um número entre 0 e 10");
         }
 
-        private void SetLocal(Local local)
+        public void SetLocal(Local local)
         {
             if (local != null && local.UserId != UserId)
                 throw new ArgumentException("Local precisa pertencer ao mesmo usuário que episódio");
@@ -78,7 +78,7 @@ namespace Enxaquecapp.Domain
             Local = local;
         }
 
-        private void SetCause(Cause cause)
+        public void SetCause(Cause cause)
         {
             if (cause != null && cause.UserId != UserId)
                 throw new ArgumentException("Causa precisa pertencer ao mesmo usuário que episódio");
@@ -87,7 +87,7 @@ namespace Enxaquecapp.Domain
             Cause = cause;
         }
 
-        private void SetRelief(Relief relief)
+        public void SetRelief(Relief relief)
         {
             if (relief != null && relief.UserId != UserId)
                 throw new ArgumentException("Alívio precisa pertencer ao mesmo usuário que episódio");

@@ -63,9 +63,6 @@ namespace Enxaquecapp.WebApi.Controllers
                 var userId = User.UserId();
                 var local = await _localsRepository.GetByIdAsync(id);
 
-                if (local.UserId != userId)
-                    return BadRequest();
-
                 if (local == null)
                     return NotFound();
 
@@ -108,8 +105,11 @@ namespace Enxaquecapp.WebApi.Controllers
                 var userId = User.UserId();
                 var local = await _localsRepository.GetByIdAsync(id);
 
+                if (local == null)
+                    return NotFound();
+
                 if (local.UserId != userId)
-                    return BadRequest();
+                    return Forbid();
 
                 local.SetDescription(inputModel.Description);
                 local.Icon = inputModel.Icon;
@@ -132,8 +132,11 @@ namespace Enxaquecapp.WebApi.Controllers
                 var userId = User.UserId();
                 var local = await _localsRepository.GetByIdAsync(id);
 
+                if (local == null)
+                    return NotFound();
+
                 if (local.UserId != userId)
-                    return BadRequest();
+                    return Forbid();
 
                 await _localsRepository.DeleteAsync(local);
 

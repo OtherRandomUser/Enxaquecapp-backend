@@ -116,7 +116,7 @@ namespace Enxaquecapp.WebApi.Controllers
                     cause = await _causesRepository.GetByIdAsync(inputModel.CauseId.Value);
 
                     if (cause == null || cause.UserId != userId)
-                        return BadRequest("Causa inválido");
+                        return BadRequest("Causa inválida");
                 }
 
                 if (inputModel.LocalId != null)
@@ -159,52 +159,69 @@ namespace Enxaquecapp.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [Authorize]
-        public Task<ActionResult<EpisodeViewModel>> PutAsync(Guid id, [FromBody] EpisodeInputModel inputModel)
+        public Task<ActionResult<EpisodeViewModel>> PutAsync(Guid id, [FromBody] EpisodeUpdateInputModel inputModel)
             => ExecuteAsync<EpisodeViewModel>(async () =>
             {
                 var userId = User.UserId();
                 var user = await _usersRepository.GetByIdAsync(userId);
 
-                var cause = default(Cause);
-                var local = default(Local);
-                var relief = default(Relief);
+                var episode = await _episodesRepository.GetByIdAsync(id);
+
+                if (inputModel.Start != null)
+                    episode.SetStart(inputModel.Start.Value);
+
+                if (inputModel.End != null)
+                    episode.SetEnd(inputModel.End);
+
+                if (inputModel.ClearEnd)
+                    episode.SetEnd(null);
+
+                if (inputModel.Intensity != null)
+                    episode.SetIntensity(inputModel.Intensity.Value);
+
+                if (inputModel.ReleafWorked != null)
+                    episode.ReleafWorked = inputModel.ReleafWorked.Value;
 
                 if (inputModel.CauseId != null)
                 {
-                    cause = await _causesRepository.GetByIdAsync(inputModel.CauseId.Value);
+                    var cause = await _causesRepository.GetByIdAsync(inputModel.CauseId.Value);
 
                     if (cause == null || cause.UserId != userId)
-                        return BadRequest("Causa inválido");
+                        return BadRequest("Causa inválida");
+
+                    episode.SetCause(cause);
                 }
+
+                if (inputModel.ClearCause)
+                    episode.SetCause(null);
 
                 if (inputModel.LocalId != null)
                 {
-                    local = await _localsRepository.GetByIdAsync(inputModel.LocalId.Value);
+                    var local = await _localsRepository.GetByIdAsync(inputModel.LocalId.Value);
 
                     if (local == null || local.UserId != userId)
                         return BadRequest("Local inválido");
+
+                    episode.SetLocal(local);
                 }
+
+                if (inputModel.ClearLocal)
+                    episode.SetLocal(null);
 
                 if (inputModel.ReliefId != null)
                 {
-                    relief = await _reliefsRepository.GetByIdAsync(inputModel.ReliefId.Value);
+                    var relief = await _reliefsRepository.GetByIdAsync(inputModel.ReliefId.Value);
 
                     if (relief == null || relief.UserId != userId)
                         return BadRequest("Alívio inválido");
+
+                    episode.SetRelief(relief);
                 }
 
-                var episode = new Episode(
-                    user,
-                    inputModel.Start,
-                    inputModel.End,
-                    inputModel.Intensity,
-                    inputModel.ReleafWorked,
-                    local,
-                    cause,
-                    relief
-                );
+                if (inputModel.ClearRelief)
+                    episode.SetRelief(null);
 
-                await _episodesRepository.AddAsync(episode);
+                await _episodesRepository.UpdateAsync(episode);
 
                 return Ok((EpisodeViewModel) episode);
             });
@@ -222,8 +239,11 @@ namespace Enxaquecapp.WebApi.Controllers
                 var userId = User.UserId();
                 var episode = await _episodesRepository.GetByIdAsync(id);
 
+                if (episode == null)
+                    return NotFound();
+
                 if (episode.UserId != userId)
-                    return BadRequest();
+                    return Forbid();
 
                 await _episodesRepository.DeleteAsync(episode);
 

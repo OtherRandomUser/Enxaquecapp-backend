@@ -63,14 +63,11 @@ namespace Enxaquecapp.WebApi.Controllers
                 var userId = User.UserId();
                 var relief = await _reliefsRepository.GetByIdAsync(id);
 
-                if (relief.UserId != userId)
-                    return BadRequest();
-
                 if (relief == null)
                     return NotFound();
 
                 if (relief.UserId != userId)
-                    return BadRequest();
+                    return Forbid();
 
                 return Ok((ReliefViewModel) relief);
             });
@@ -108,8 +105,11 @@ namespace Enxaquecapp.WebApi.Controllers
                 var userId = User.UserId();
                 var releif = await _reliefsRepository.GetByIdAsync(id);
 
+                if (releif == null)
+                    return NotFound();
+
                 if (releif.UserId != userId)
-                    return BadRequest();
+                    return Forbid();
 
                 releif.SetDescription(inputModel.Description);
                 releif.Icon = inputModel.Icon;
@@ -132,8 +132,11 @@ namespace Enxaquecapp.WebApi.Controllers
                 var userId = User.UserId();
                 var relief = await _reliefsRepository.GetByIdAsync(id);
 
+                if (relief == null)
+                    return NotFound();
+
                 if (relief.UserId != userId)
-                    return BadRequest();
+                    return Forbid();
 
                 await _reliefsRepository.DeleteAsync(relief);
 
