@@ -82,14 +82,11 @@ namespace Enxaquecapp.WebApi.Controllers
                     .Include(r => r.Relief)
                 );
 
-                if (episode.UserId != userId)
-                    return BadRequest();
-
                 if (episode == null)
                     return NotFound();
 
                 if (episode.UserId != userId)
-                    return BadRequest();
+                    return Forbid();
 
                 return Ok((EpisodeViewModel) episode);
             });
@@ -154,18 +151,22 @@ namespace Enxaquecapp.WebApi.Controllers
         /// <summary>
         /// Update an Episode
         /// </summary>
-        /// <param name="id">Id of the Episodeto be updated</param>
+        /// <param name="id">Id of the Episode to be updated</param>
         /// <param name="inputModel">Episode information</param>
         /// <returns></returns>
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         [Authorize]
         public Task<ActionResult<EpisodeViewModel>> PutAsync(Guid id, [FromBody] EpisodeUpdateInputModel inputModel)
             => ExecuteAsync<EpisodeViewModel>(async () =>
             {
                 var userId = User.UserId();
-                var user = await _usersRepository.GetByIdAsync(userId);
-
                 var episode = await _episodesRepository.GetByIdAsync(id);
+
+                if (episode == null)
+                    return NotFound();
+
+                if (episode.UserId != userId)
+                    return Forbid();
 
                 if (inputModel.Start != null)
                     episode.SetStart(inputModel.Start.Value);
@@ -229,7 +230,7 @@ namespace Enxaquecapp.WebApi.Controllers
         /// <summary>
         /// Delete an Episode
         /// </summary>
-        /// <param name="id">Id of the epísode</param>
+        /// <param name="id">Id of the episode</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         [Authorize]
