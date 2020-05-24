@@ -49,6 +49,7 @@ namespace Enxaquecapp.WebApi
             var tokenConfigurator = new ConfigureFromConfigurationOptions<TokenSettings>(_config.GetSection("TokenSettings"));
             tokenConfigurator.Configure(tokenSettings);
             services.AddSingleton<TokenSettings>(tokenSettings);
+            services.AddScoped<TokenProvider>();
 
             var key = Convert.FromBase64String(tokenSettings.SecretKey);
 

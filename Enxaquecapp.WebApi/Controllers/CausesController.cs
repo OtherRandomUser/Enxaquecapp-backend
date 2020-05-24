@@ -41,8 +41,8 @@ namespace Enxaquecapp.WebApi.Controllers
                     _causesRepository
                         .GetQueryable()
                         .Where(c => c.UserId == userId)
-                        .Select(c => (CauseViewModel) c)
-                        .AsEnumerable());
+                        .AsEnumerable()
+                        .Select(c => (CauseViewModel) c));
 
                 if (!causes.Any())
                     return NoContent();
@@ -72,7 +72,7 @@ namespace Enxaquecapp.WebApi.Controllers
                 if (cause.UserId != userId)
                     return BadRequest();
 
-                return Ok(cause);
+                return Ok((CauseViewModel) cause);
             });
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Enxaquecapp.WebApi.Controllers
         /// </summary>
         /// <param name="id">Id of the cause</param>
         /// <returns></returns>
-        [HttpPut("{id}")]
+        [HttpDelete("{id}")]
         [Authorize]
         public Task<ActionResult> DeleteAsync(Guid id)
             => ExecuteAsync(async () =>
