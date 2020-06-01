@@ -4,6 +4,7 @@ using Enxaquecapp.Data;
 using Enxaquecapp.Domain;
 using Enxaquecapp.WebApi.Extensions;
 using Enxaquecapp.WebApi.InputModels;
+using Enxaquecapp.WebApi.Security;
 using Enxaquecapp.WebApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,16 +47,23 @@ namespace Enxaquecapp.WebApi.Controllers
         /// <param name="inputModel">User information</param>
         /// <returns></returns>
         [HttpPost]
-        public Task<ActionResult<UserViewModel>> PostAsync([FromBody] UserInputModel inputModel)
-            => ExecuteAsync<UserViewModel>(async () =>
+        public Task<ActionResult<TokenViewModel>> PostAsync([FromServices] TokenProvider provider, [FromBody] UserInputModel inputModel)
+            => ExecuteAsync<TokenViewModel>(async () =>
             {
-                var sex = Sex.NotDisclosed;
-                Enum.TryParse<Sex>(inputModel.Sex, true, out sex);
+                var sex = Gender.NotDisclosed;
+
+                if (inputModel.Gender.ToUpper() == "Masculino".ToUpper())
+                    sex = Gender.Male;
+
+                if (inputModel.Gender.ToUpper() == "Feminino".ToUpper())
+                    sex = Gender.Female;
 
                 var user = new User(inputModel.Name, inputModel.Email, inputModel.Password, inputModel.BirthDate, sex);;
                 await _usersRepository.AddAsync(user);
 
-                return Ok((UserViewModel) user);
+                var result = await provider.GenerateTokenAsync(inputModel.Email, inputModel.Password);
+
+                return Ok((TokenViewModel) result);
             });
 
         /// <summary>
@@ -89,9 +97,9 @@ namespace Enxaquecapp.WebApi.Controllers
 
                 if (inputModel.Sex != null)
                 {
-                    var sex = Sex.NotDisclosed;
-                    Enum.TryParse<Sex>(inputModel.Sex, true, out sex);
-                    user.Sex = sex;
+                    var sex = Gender.NotDisclosed;
+                    Enum.TryParse<Gender>(inputModel.Sex, true, out sex);
+                    user.Gender = sex;
                 }
 
                 await _usersRepository.UpdateAsync(user);

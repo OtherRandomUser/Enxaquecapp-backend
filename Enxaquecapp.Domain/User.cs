@@ -18,19 +18,19 @@ namespace Enxaquecapp.Domain
         public Collection<Local> Locals { get; protected set; }
         public Collection<Relief> Reliefs { get; protected set; }
 
-        public Sex Sex { get; set; }
+        public Gender Gender { get; set; }
 
         protected User()
         {
         }
 
-        public User(string name, string email, string password, DateTime birthDate, Sex sex)
+        public User(string name, string email, string password, DateTime birthDate, Gender gender)
         {
             SetName(name);
             SetEmail(email);
             SetPassword(password);
             SetBirthDate(birthDate);
-            Sex = sex;
+            Gender = gender;
         }
 
         public void SetName(string name)
@@ -71,7 +71,7 @@ namespace Enxaquecapp.Domain
         }
     }
 
-    public enum Sex
+    public enum Gender
     {
         NotDisclosed,
         Male,

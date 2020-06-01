@@ -22,7 +22,7 @@ namespace Enxaquecapp.WebApi.Extensions
 
                     if (user == null)
                     {
-                        user = new User("João", "address@example.com", "123", DateTime.Parse("2010-12-20"), Sex.Male);
+                        user = new User("João", "address@example.com", "123", DateTime.Parse("2010-12-20"), Gender.Male);
                         context.Users.Add(user);
                         context.SaveChanges();
                     }

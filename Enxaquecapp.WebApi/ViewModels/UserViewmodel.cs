@@ -8,35 +8,42 @@ namespace Enxaquecapp.WebApi.ViewModels
         public string Name { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
-        public string Sex { get; set; }
+        public int Age { get; set; }
+        public string Gender { get; set; }
 
         public static implicit operator UserViewModel(User user)
         {
             if (user == null)
                 return null;
 
-            var sex = default(string);
+            var gender = default(string);
 
-            switch (user.Sex)
+            switch (user.Gender)
             {
-                case Domain.Sex.Male:
+                case Domain.Gender.Male:
                 {
-                    sex = "Masculino";
+                    gender = "Masculino";
                     break;
                 }
 
-                case Domain.Sex.Female:
+                case Domain.Gender.Female:
                 {
-                    sex = "Feminino";
+                    gender = "Feminino";
                     break;
                 }
 
-                case Domain.Sex.NotDisclosed:
+                case Domain.Gender.NotDisclosed:
                 {
-                    sex = "Não Informado";
+                    gender = "Não Informado";
                     break;
                 }
             }
+
+            var now = DateTime.UtcNow;
+            var age = now.Year - user.BirthDate.Year;
+
+            if ((user.BirthDate.Month == now.Month && now.Day < user.BirthDate.Day) || now.Month < user.BirthDate.Month)
+                age--;
 
             return new UserViewModel
             {
@@ -45,7 +52,8 @@ namespace Enxaquecapp.WebApi.ViewModels
                 Name = user.Name,
                 Email = user.Email,
                 BirthDate = user.BirthDate,
-                Sex = sex
+                Age = age,
+                Gender = gender
             };
         }
     }
