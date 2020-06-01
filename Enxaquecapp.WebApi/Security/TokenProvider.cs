@@ -55,7 +55,8 @@ namespace Enxaquecapp.WebApi.Security
 
             var viewModel = new TokenViewModel
             {
-                Token = tokenHandler.WriteToken(token)
+                Token = tokenHandler.WriteToken(token),
+                User = user
             };
 
             return viewModel;
