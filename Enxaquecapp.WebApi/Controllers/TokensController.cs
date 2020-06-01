@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Enxaquecapp.WebApi.InputModels;
 using Enxaquecapp.WebApi.Security;
 using Enxaquecapp.WebApi.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Enxaquecapp.WebApi.Controllers
@@ -45,5 +46,14 @@ namespace Enxaquecapp.WebApi.Controllers
                 return Unauthorized(e.Message);
             }
         }
+
+        /// <summary>
+        /// Test authentication
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("authenticate")]
+        [Authorize]
+        public Task<ActionResult> GetAsync()
+            => Task.FromResult((ActionResult) Ok());
     }
 }
