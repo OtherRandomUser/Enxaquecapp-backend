@@ -122,7 +122,7 @@ namespace Enxaquecapp.WebApi
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("swagger/v1/swagger.json", "Soapstone Backend v1");
+                c.SwaggerEndpoint("swagger/v1/swagger.json", "Exnaquecapp Backend v1");
                 c.RoutePrefix = string.Empty;
             });
 
