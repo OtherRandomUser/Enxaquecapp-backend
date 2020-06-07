@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Enxaquecapp.Data;
 using Enxaquecapp.Domain;
@@ -16,10 +17,20 @@ namespace Enxaquecapp.WebApi.Controllers
     public class UsersController : ApiControllerBase
     {
         private GenericRepository<User> _usersRepository;
+        private GenericRepository<Cause> _causesRepository;
+        private GenericRepository<Relief> _reliefsRepository;
+        private GenericRepository<Local> _localsRepository;
 
-        public UsersController(GenericRepository<User> usersRepository)
+        public UsersController(
+            GenericRepository<User> usersRepository,
+            GenericRepository<Cause> causesRepository,
+            GenericRepository<Relief> reliefsRepository,
+            GenericRepository<Local> localsRepository)
         {
             _usersRepository = usersRepository;
+            _causesRepository = causesRepository;
+            _reliefsRepository = reliefsRepository;
+            _localsRepository = localsRepository;
         }
 
         /// <summary>
@@ -60,6 +71,7 @@ namespace Enxaquecapp.WebApi.Controllers
 
                 var user = new User(inputModel.Name, inputModel.Email, inputModel.Password, inputModel.BirthDate, sex);;
                 await _usersRepository.AddAsync(user);
+                await AddDefaultOptionsAsync(user);
 
                 var result = await provider.GenerateTokenAsync(inputModel.Email, inputModel.Password);
 
@@ -127,5 +139,30 @@ namespace Enxaquecapp.WebApi.Controllers
 
                 return Ok();
             });
+
+        private async Task AddDefaultOptionsAsync(User user)
+        {
+            var reliefs = new List<Relief>
+            {
+                new Relief(user, "Relief 1", null),
+                new Relief(user, "Relief 2", null)
+            };
+
+            var causes = new List<Cause>
+            {
+                new Cause(user, "Cause 1", null),
+                new Cause(user, "Cause 2", null)
+            };
+
+            var locals = new List<Local>
+            {
+                new Local(user, "Local 1", null),
+                new Local(user, "Local 2", null)
+            };
+
+            await _reliefsRepository.AddRangeAsync(reliefs);
+            await _causesRepository.AddRangeAsync(causes);
+            await _localsRepository.AddRangeAsync(locals);
+        }
     }
 }
