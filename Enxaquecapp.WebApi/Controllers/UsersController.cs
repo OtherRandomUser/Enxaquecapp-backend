@@ -81,16 +81,15 @@ namespace Enxaquecapp.WebApi.Controllers
         /// <summary>
         /// Update an User
         /// </summary>
-        /// <param name="id">Id of the User to be updated</param>
         /// <param name="inputModel">User information</param>
         /// <returns></returns>
-        [HttpPatch("{id}")]
+        [HttpPatch]
         [Authorize]
-        public Task<ActionResult<UserViewModel>> PatchAsync(Guid id, [FromBody] UserUpdateInputModel inputModel)
+        public Task<ActionResult<UserViewModel>> PatchAsync([FromBody] UserUpdateInputModel inputModel)
             => ExecuteAsync<UserViewModel>(async () =>
             {
                 var userId = User.UserId();
-                var user = await _usersRepository.GetByIdAsync(id);
+                var user = await _usersRepository.GetByIdAsync(userId);
 
                 if (user == null)
                     return NotFound();
