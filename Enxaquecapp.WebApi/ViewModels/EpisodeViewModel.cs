@@ -21,6 +21,8 @@ namespace Enxaquecapp.WebApi.ViewModels
 
             return new EpisodeViewModel
             {
+                Id = episode.Id,
+                CreatedAt = episode.CreatedAt,
                 Start = episode.Start,
                 End = episode.End,
                 Intensity = episode.Intensity,

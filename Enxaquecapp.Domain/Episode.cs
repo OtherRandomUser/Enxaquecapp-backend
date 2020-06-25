@@ -67,6 +67,8 @@ namespace Enxaquecapp.Domain
         {
             if (intensity < 0 || intensity > 10)
                 throw new ArgumentOutOfRangeException("A intensidade de um episódio precisa ser um número entre 0 e 10");
+
+            Intensity = intensity;
         }
 
         public void SetLocal(Local local)

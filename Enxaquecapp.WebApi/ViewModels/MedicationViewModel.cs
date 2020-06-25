@@ -20,6 +20,8 @@ namespace Enxaquecapp.WebApi.ViewModels
 
             return new MedicationViewModel
             {
+                Id = medication.Id,
+                CreatedAt = medication.CreatedAt,
                 Name = medication.Name,
                 Description = medication.Description,
                 Start = medication.Start,

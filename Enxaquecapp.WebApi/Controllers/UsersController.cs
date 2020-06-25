@@ -69,7 +69,7 @@ namespace Enxaquecapp.WebApi.Controllers
                 if (inputModel.Gender.ToUpper() == "Feminino".ToUpper())
                     sex = Gender.Female;
 
-                var user = new User(inputModel.Name, inputModel.Email, inputModel.Password, inputModel.BirthDate, sex);;
+                var user = new User(inputModel.Name, inputModel.Email, inputModel.Password, inputModel.BirthDate, sex);
                 await _usersRepository.AddAsync(user);
                 await AddDefaultOptionsAsync(user);
 
@@ -143,20 +143,44 @@ namespace Enxaquecapp.WebApi.Controllers
         {
             var reliefs = new List<Relief>
             {
-                new Relief(user, "Relief 1", null),
-                new Relief(user, "Relief 2", null)
+                new Relief(user, "Nada", null),
+                new Relief(user, "Dormi", null),
+                new Relief(user, "Bebi água", null),
+                new Relief(user, "Fiz um exercício", null),
+                new Relief(user, "Tomei um remédio", null),
+                new Relief(user, "Fiquei em um lugar escuro e quieto", null),
+                new Relief(user, "Pedi demissão", null)
             };
 
             var causes = new List<Cause>
             {
-                new Cause(user, "Cause 1", null),
-                new Cause(user, "Cause 2", null)
+                new Cause(user, "Stress", null),
+                new Cause(user, "Falta de sono", null),
+                new Cause(user, "Ansiedade", null),
+                new Cause(user, "Falta de água", null),
+                new Cause(user, "Café", null),
+                new Cause(user, "Bebida", null),
+                new Cause(user, "Barulho", null),
+                new Cause(user, "Luz", null),
+                new Cause(user, "Som", null),
+                new Cause(user, "Cheiro", null),
+                new Cause(user, "Menstruação", null),
+                new Cause(user, "Menopausa", null),
+                new Cause(user, "Mudança climática", null),
+                new Cause(user, "Viagem", null)
             };
 
             var locals = new List<Local>
             {
-                new Local(user, "Local 1", null),
-                new Local(user, "Local 2", null)
+                new Local(user, "Em casa", null),
+                new Local(user, "Na rua", null),
+                new Local(user, "No trabalho", null),
+                new Local(user, "Em uma loja", null),
+                new Local(user, "Em um restaurante", null),
+                new Local(user, "Em um bar", null),
+                new Local(user, "Em um carro", null),
+                new Local(user, "Em um ônibus", null),
+                new Local(user, "Em um avião", null)
             };
 
             await _reliefsRepository.AddRangeAsync(reliefs);
