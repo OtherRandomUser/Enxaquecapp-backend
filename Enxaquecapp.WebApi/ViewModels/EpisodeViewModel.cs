@@ -10,7 +10,7 @@ namespace Enxaquecapp.WebApi.ViewModels
         public int Intensity { get; set; }
         public bool ReleafWorked { get; set; }
 
-        LocalViewModel Local { get; set; }
+        public LocalViewModel Local { get; set; }
         public CauseViewModel Cause { get; set; }
         public ReliefViewModel Relief { get; set; }
 
